@@ -171,7 +171,7 @@ https://github.com/dolanor/rip
 
 .code snippets/interface/backend.go /start BackendFuncSignature OMIT/,/end BackendFuncSignature OMIT/
 
-.code snippets/interface/handler_more.go /start Handle OMIT/,/end Handle OMIT/
+.code snippets/interface/handler.go /start Handle OMIT/,/end Handle OMIT/
 
 : We have some solution, we can abstract the handler and make it work with empty interfaces
 : but it will make us abstract the backend function with interfaces as well. Which has its own issues
@@ -277,7 +277,7 @@ math.go:11:19: cannot use y (variable of type int) as float64 value in argument 
 
 .image assets/angry-toddler.gif 500 _
 
-: but we have generics now, it must be better, right? More readable?
+: but we have generics now, it must be better, right? nore readable?
 
 ## With generics: min
 

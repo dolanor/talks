@@ -1,0 +1,3 @@
+[submodule "rip/snippets/rip"]
+	path = rip/snippets/rip
+	url = git@github.com:dolanor/rip
