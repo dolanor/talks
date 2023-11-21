@@ -1,0 +1,464 @@
+# RIP
+
+REST in Peace
+
+19 Nov 2023
+
+Tags: web, REST, RESTful, golang
+
+Tanguy Herrmann
+Senior Software Engineer, Tuxago⧓
+https://hachyderm.io/@dolanor
+
+https://github.com/dolanor/rip
+
+: Hello everybody
+
+: I'm gonna talk to you about a project of mine I called, RIP
+
+## Genesis
+
+.image assets/govircon-2021-generics.jpeg _ 1000
+
+: in 2021, GopherCon became virtual (again) -> GoVirCon
+: Robert Griesemer and Ian Lance Taylor gave a talk on how and when to use generics
+: Ian implemented several version of generics (I believe more than 6), so he knew
+: the pros and cons of the current implementation
+: it was still the best implementation of it, for the Go language
+: and he gave some advice on how to use them
+
+## Ian's advice for generics in Go
+
+.video assets/wise-generics.mp4 video/mp4 550 _
+
+: of course, when some authority figures tells you "to use something wisely", what do you do?
+
+: the exact opposite! Because, Rage against the machine!
+: I won't do what you tell me!
+
+## CrowdStrike's Generics Challenge
+
+.image assets/crowdstrike-challenge.png _ 800
+
+: so, some mischievous security gophers from CrowdStrike had a challenge idea
+: as if none of those security people are to be trusted
+
+: *point finger to the crowd* I see you
+
+: we had a lot of fun, and awful things: monads, Perl style
+
+## Generics Challenge: Async/Await
+
+.image assets/async-await.png _ 1000
+
+: this, is, my personal attempt to make the World a Worse Place
+: an async/await in Go
+
+## Generics Challenge: Try/Catch
+
+.image assets/try-catch.png _ 1000
+
+: Heck, even somebody implemented a try/catch in Go
+
+: because F you, that's why!
+
+: but I also submitted something that I saw could be useful. In fact, I worked on it while the generics where hidden behind an experimental flag.
+: This talk is to share about this idea
+
+## Generics Challenge: success
+
+.image assets/gopher-crowdstrike.jpeg 500 _
+
+: thanks to the awful work I've commited this time, I earned a beautiful CrowdStrike gopher plush and a T-shirt
+
+: some ill-advised people might tell you that any participants in this foolish contest got goodies from CrowdStrike.
+
+: but again, security people are not to be trusted!
+
+
+
+## About me
+
+- Tanguy
+- from France
+- 16 years in IT
+
+: So who am I?
+
+: I'm Tanguy
+: I'm from France
+: I've worked in IT for 16 years, started with 8 years in consulting. In multiple domains: avionics, 3D mobile app in airports, logistics, healthcare, finance.
+: But that was before…
+
+## About me
+
+.video assets/pole-dance.mp4 video/mp4 550 _
+
+: as you can see from this video
+: I'm a freelancer. I'm ready to do anything for money
+
+: *look at screen* fresh from this week-end!
+
+## About me
+
+- freelancer specialized in Go since 2015
+- mostly classic RESTful API backends
+- some blockchain
+- containers in CI/CD [@dagger_io](https://dagger.io)
+- interested in pushing Go in more areas: GUI, video games, AI, embedded, …
+
+: I'm a freelancer specialized in Go since 2015
+: I've worked in more domains with Go. Technically mostly in API backends
+: I've worked in some blockchain projects as well
+: I took a pause in freelancing for a year working at Dagger. I think what they're doing is awesome, go check them out!
+: I love Go, and I think it has other uses than just backend, devops and CLI
+: There are a lot of other areas that I think would suit Go as well
+
+: Let's go back on the topic. I'll start with a question: What is this?
+: can anyone recognized this next piece of code?
+
+## What is this?
+
+.code snippets/classic/handler.go /start classic OMIT/,/end classic OMIT/
+
+: Who, among you, wrote this kind of code?
+
+: For those who don't, it's an HTTP handler, it has JSON decoding
+: a validation function if you're that fancy
+: and then, we encode the data back to JSON to the client
+: So, what's the point of all this code?
+
+
+## What's the point?
+
+.code snippets/classic/handler.go /start classic OMIT/,/end classic OMIT/ HLinterestingCall
+
+: What is interesting, really, to us?
+: is the HTTP part really interesting to us?
+
+: What is interesting, is that single line.
+: the backend function. Can be a database, can be another API.
+: it can be domain logic as well, otherwise, you're just doing CRUD
+
+: The rest, is mostly uninteresting to us, glue code for HTTP
+
+## Let's add a new handler
+
+.code snippets/classic/handler.go /start classic2 OMIT/,/end classic2 OMIT/ HLclassic2
+
+: now, let's add a new handler, for a new type of resource
+: so we changed, here, here, and here
+
+##
+
+.image assets/let-me-think.jpg 500 _
+
+: Did you notice something?
+
+## Let's add a new one
+
+.code snippets/classic/handler.go /start classic2 OMIT/,/end classic2 OMIT/ HLgarbage2
+
+: What is everything in bold?
+
+##
+
+.image assets/garbage.jpg 500 _
+
+: Yep, it is total duplicate boilerplate garbage
+
+## Solution: Abstract the handler
+
+.code snippets/interface/backend.go /start BackendFuncSignature OMIT/,/end BackendFuncSignature OMIT/
+
+.code snippets/interface/handler_more.go /start Handle OMIT/,/end Handle OMIT/
+
+: We have some solution, we can abstract the handler and make it work with empty interfaces
+: but it will make us abstract the backend function with interfaces as well. Which has its own issues
+
+: as someone famously said : `interface{}` means nothing
+: *whisper* it was Rob Pike, in his Go Proverbs talk, for the newcomers
+
+
+## Abstract the handler: backend wrapper
+
+.code snippets/interface/backend.go /start BackendWrapper OMIT/,/end BackendWrapper OMIT/ HLBackend
+
+: as we have a very open API with empty interfaces, we need to get back to real types
+: and that takes work.
+
+## Abstract the handler: input converter
+
+.code snippets/interface/backend.go /start inputFromMap OMIT/,/end inputFromMap OMIT/ HLBackend
+
+: first we have to make sure we have the value in our map
+: then we need to convert in the right field type
+: and potentially converting the type in the final one, like this float64
+: and after dealing with so many cases where it can go wrong, we finally have a real typed data
+: and all of this gymnastic, for a struct with 2 fields.
+: imagine with many level of depth in that struct, and you have hundred of lines of code to deal with that
+: … for 1 handler, 1 input, 1 output
+
+## Abstract the handler: real backend
+
+.code snippets/interface/backend.go /start realBackendCall OMIT/,/end realBackendCall OMIT/ HLBackend
+
+: Finally, we have real types we can work with.
+: obviously, your real backend code might be more complex.
+: or, you have found the best niche in the world if you make money out of it.
+
+## Conclusion
+
+- lot of runtime/reflect boilerplate to get back to types
+- potential reuse of the handler
+
+: So, what's about this?
+: you have to create a lot of runtime/reflect type of checks to get back to types in your backend part
+: and have a lot tests to make sure your logic is sound
+
+: but, you can potentially reuse the handler code
+
+: copy pasting full handler code doesn't seem so bad, in the end
+
+: there are other ways, but along those years, I have not been really satisfied with them
+: too much work at runtime to get to the types
+
+## If only
+
+## Generics to the rescue
+
+.image assets/generics.jpg 500 _
+
+: Now, we have generics
+
+## Generics: Pros
+
+- better type safety
+- better performance than `interface{}`/`any` (except for this use case)
+  + Go check this [article from Vicent Marti](https://planetscale.com/blog/generics-can-make-your-go-code-slower)
+- more readable code (`math` package, for example)
+- DRY
+
+
+## Without generics: math.Min
+
+```go
+	x := 1
+	y := 2
+	z := math.Min(x, y)
+	fmt.Println(z)
+```
+
+: Does this code works?
+
+## Without generics: math.Min
+
+```go
+	x := 1
+	y := 2
+	z := math.Min(x, y)
+	fmt.Println(z)
+```
+
+```
+math.go:11:16: cannot use x (variable of type int) as float64 value in argument to math.Min
+math.go:11:19: cannot use y (variable of type int) as float64 value in argument to math.Min
+```
+
+: Nope, it doesn't even compile
+
+## Without generics: math.Min: Solution
+
+.code snippets/generic/math.go /start min/,/end min/ HLUgly
+
+: my reaction to this, is…
+
+## 
+
+.image assets/angry-toddler.gif 500 _
+
+: but we have generics now, it must be better, right? More readable?
+
+## With generics: min
+
+```
+func min[T cmp.Ordered](x T, y ...T) T
+```
+
+: I see, you're not convinced!
+
+## With generics: min
+
+```
+func min[T cmp.Ordered](x T, y ...T) T
+```
+
+```
+func Min(x, y float64) float64 {
+```
+
+generics library code is less readable
+
+: the generics library code is less readable, more cryptic
+
+## With generics: min: user code
+
+```go
+	x := 1
+	y := 2
+	z := min(x, y)
+	fmt.Println(z)
+```
+
+This just works
+
+: but the user code is way more readable
+
+## RIP
+
+.image assets/rip.png 500 _
+
+: now, let's talk about RIP
+: RIP is supposed to make most of the HTTP boilerplate disappear
+
+## RIP: User code
+
+```go
+func Uppercase(ctx context.Context, name string) (string, error) {
+     return strings.ToUpper(name), nil
+}
+```
+
+```go
+http.HandleFunc("/uppercase", rip.Handle(http.MethodPost, Uppercase))
+```
+: Let's reuse some standard library, and wrap it in a rip.InputOutputFunc
+: then we can just use it in the standard library ServeMux, and all the HTTP part is handled magically
+
+: now that I can basically wrap nearly every request/response API into HTTP
+: how about creating every endpoints needed for some RESTFul resources?
+
+## rip.Handle Demo
+
+https://github.com/dolanor/rip
+
+## RIP: Library code
+
+.code snippets/rip/handler.go /start BackendFunc OMIT/,/end BackendFunc OMIT/
+
+.code snippets/rip/handler.go /start Handle OMIT/,/end Handle OMIT/
+
+: as I said, generics library code is more complex by default, harder to read
+: but the bonus in user code is pretty great
+
+##
+
+.image assets/inception-deeper.gif 500 _
+
+## REST in Peace
+
+A key concept of REST services is the notion of resource
+- accessible via a URI
+- action on the resource URI via HTTP methods (POST, PUT, GET, DELETE, …)
+- current state sent back via HTTP response
+
+## User code: Entity handler
+
+
+.code snippets/rip/examples/srv-example/main.go /start HandleFuncEntities OMIT/,/end HandleFuncEntities OMIT/
+
+.code snippets/rip/resource.go /start EntityProvider OMIT/,/end EntityProvider OMIT/
+
+: in DDD, a resource that can be uniquely identified is called and entity
+: I decided to use this terminology as it makes sense to me
+: (and was clearly a shorter name than IdentifiableResource)
+
+## Lib code
+
+.code snippets/rip/handler.go /start HandleEntities OMIT/,/end HandleEntities OMIT/
+
+
+## What you get
+
+- creation of CRUD HTTP endpoints
+- content negociation for many encodings (json, xml, msgpack, HTML, HTML Forms, …)
+- automated resource web pages that can edit the resource
+- harmonious way of handling common scenarios (unknown resource: return a 404, etc)
+
+
+## Encoding
+
+.code snippets/rip/encoding/json/json.go
+
+## Quote
+
+    RIP is to HTTP what an ORM is to SQL
+      - me, probably
+
+: abstract the HTTP part and just stay high level
+: I'm afraid of this quote, because I know a lot of people hate ORM with a passion
+: so I don't know if I already made you hate this project now
+
+
+## Demo
+
+https://github.com/dolanor/rip
+
+: curl -H "Content-Type: application/json" -H "Accept: Content-Type: application/json" localhost:8888/users/
+
+## Future
+
+- access/update fields independantly (GET/POST/PUT/DELETE `/users/1/name`)
+- nested resources (eg, `/users/1/posts/1` also points to `/posts/1` )
+- more HATEOAS (Hypermedia As The Engine Of Application State)
+  + links
+  + API auto documentation/explorability
+  + support for JSON-LD
+- improve the API
+
+## Future
+
+- protobuf encoding
+- use of `log/slog` logger interface
+- better error handling
+  - better error type
+  - nice standard way to return errors to user
+- customization of HTML template
+- authorization of HTML pages
+- generation of GUI apps based on your API
+
+## Call to action
+
+- feedback
+- discussion
+- contribution
+
+https://github.com/dolanor/rip
+
+: I did this for myself at first, but I think it can help other people as well
+: I'd like to get some feedback from you all
+: especially if you think it won't work in the longer term
+: and you had some experience with some existing framework like this (spring boot, django rest API)
+: you could avoid me some lost hours
+
+## Thanks
+
+- The Go Team
+- Go SXB Go Meetup (Strasbourg)
+- Thierry Pfeiffer for the logo
+- You for watching that talk
+- HTMX
+
+.image assets/htmx-logo-pickle.jpeg _ 200
+
+: The Go Team for delivering the generics
+: Go SXB Go Meetup (Strasbourg), for reviewing this talk
+: Thierry Pfeiffer for the logo
+: HTMX, for the library it provides, and all the memes that make me laugh on Twitter
+
+: Talking about Twitter, I'm gonna leave the platform, so if you wanna follow me
+: I'll be exclusively on mastodon starting next week
+
+: I encourage you to do the same, as the platform has becoming more and more hostile for many people
+: and I joined the Go community for its values in inclusivity and diversity.
+: I hope we can continue in this direction
