@@ -40,6 +40,8 @@ https://github.com/dolanor/rip
 
 .image assets/crowdstrike-challenge.png _ 800
 
+[Original Post](https://discord.com/channels/755435423177638059/918280718013054986/918280720005337158)
+
 : so, some mischievous security gophers from CrowdStrike had a challenge idea
 : as if none of those security people are to be trusted
 
@@ -51,12 +53,19 @@ https://github.com/dolanor/rip
 
 .image assets/async-await.png _ 1000
 
+
+[Original Post](https://discord.com/channels/755435423177638059/918280718013054986/918311335144587304)  
+[go.dev/play link](https://gotipplay.golang.org/p/dZUeHixD7Ua)  
+
 : this, is, my personal attempt to make the World a Worse Place
 : an async/await in Go
 
 ## Generics Challenge: Try/Catch
 
 .image assets/try-catch.png _ 1000
+
+[Original Post](https://discord.com/channels/755435423177638059/918280718013054986/918538237306339348)  
+[go.dev/play link](https://gotipplay.golang.org/p/FGOD0V1LuqZ)  
 
 : Heck, even somebody implemented a try/catch in Go
 
@@ -69,12 +78,27 @@ https://github.com/dolanor/rip
 
 .image assets/gopher-crowdstrike.jpeg 500 _
 
+
 : thanks to the awful work I've commited this time, I earned a beautiful CrowdStrike gopher plush and a T-shirt
 
 : some ill-advised people might tell you that any participants in this foolish contest got goodies from CrowdStrike.
 
 : but again, security people are not to be trusted!
 
+## Generics Challenge: all the submissions
+
+[Original Post](https://discord.com/channels/755435423177638059/775877786698776576/918957768533245952)
+
+[Element Extraction (@Tanguy)](https://gotipplay.golang.org/p/rtSs9zdtQnI)  
+[New() (@Tanguy)](https://gotipplay.golang.org/p/3UoOMsQZMlW)  
+[ProMess, Async, Await (@Tanguy)](https://gotipplay.golang.org/p/dZUeHixD7Ua)  
+[Print (@Tanguy)](https://gotipplay.golang.org/p/1T5Yn1MFZL6)  
+[Try, Catch, Finally (@terrabitz )](https://gotipplay.golang.org/p/87QFmuQ-OVA)  
+[Monads (@danicat )](https://gotipplay.golang.org/p/IQBorcFUTW5)  
+[Fluent Method Chains (@danicat )](https://gotipplay.golang.org/p/8rqkQPt0CJS)  
+[Perl (@Andy Walker - (he/him))](https://go.dev/play/p/YidoeekdtIo?v=gotip)  
+[AJAX (@Ben Woodward | CrowdStrike )](https://gotipplay.golang.org/p/Xryrf6yR9bE)  
+[HTTP Request/Response (@Tanguy)](https://go.dev/play/p/SV-aeh51526?v=gotip)  
 
 
 ## About me
