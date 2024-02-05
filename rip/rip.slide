@@ -2,15 +2,16 @@
 
 REST in Peace
 
-19 Nov 2023
+3 Feb 2024
 
-Tags: web, REST, RESTful, golang
+Tags: web, REST, RESTful, golang, Go, generics
 
 Tanguy Herrmann
 Senior Software Engineer, Tuxago⧓
 https://hachyderm.io/@dolanor
 
 https://github.com/dolanor/rip
+
 
 : Hello everybody
 
@@ -20,8 +21,7 @@ https://github.com/dolanor/rip
 
 .image assets/govircon-2021-generics.jpeg _ 1000
 
-: in 2021, GopherCon became virtual (again) -> GoVirCon
-: Robert Griesemer and Ian Lance Taylor gave a talk on how and when to use generics
+: in 2021, Robert Griesemer and Ian Lance Taylor gave a talk on how and when to use generics
 : Ian implemented several version of generics (I believe more than 6), so he knew
 : the pros and cons of the current implementation
 : it was still the best implementation of it, for the Go language
@@ -31,10 +31,10 @@ https://github.com/dolanor/rip
 
 .video assets/wise-generics.mp4 video/mp4 550 _
 
+: his advice was <play video> `to use the generics wisely`
 : of course, when some authority figures tells you "to use something wisely", what do you do?
 
-: the exact opposite! Because, Rage against the machine!
-: I won't do what you tell me!
+: the exact opposite! Because, F Authority, that's why
 
 ## CrowdStrike's Generics Challenge
 
@@ -105,13 +105,14 @@ https://github.com/dolanor/rip
 
 - Tanguy
 - from France
-- 16 years in IT
+- 17 years in IT
+- CEO of HTMX
 
 : So who am I?
 
 : I'm Tanguy
 : I'm from France
-: I've worked in IT for 16 years, started with 8 years in consulting. In multiple domains: avionics, 3D mobile app in airports, logistics, healthcare, finance.
+: I've worked in IT for 17 years, started with 8 years in consulting. In multiple domains: avionics, 3D mobile app in airports, logistics, healthcare, finance.
 : But that was before…
 
 ## About me
@@ -120,15 +121,15 @@ https://github.com/dolanor/rip
 
 : as you can see from this video
 : I'm a freelancer. I'm ready to do anything for money
-
-: *look at screen* fresh from this week-end!
+: It's a few months old video now, I didn't do something as foolish as that since then
+: Maybe I can fix that with this presentation!
 
 ## About me
 
 - freelancer specialized in Go since 2015
 - mostly classic RESTful API backends
 - some blockchain
-- containers in CI/CD [@dagger_io](https://dagger.io)
+- containers in CI/CD as code [@dagger_io](https://dagger.io)
 - interested in pushing Go in more areas: GUI, video games, AI, embedded, …
 
 : I'm a freelancer specialized in Go since 2015
@@ -200,7 +201,7 @@ https://github.com/dolanor/rip
 : We have some solution, we can abstract the handler and make it work with empty interfaces
 : but it will make us abstract the backend function with interfaces as well. Which has its own issues
 
-: as someone famously said : `interface{}` means nothing
+: as a wise person famously said : `interface{}` means nothing
 : *whisper* it was Rob Pike, in his Go Proverbs talk, for the newcomers
 
 
@@ -229,7 +230,7 @@ https://github.com/dolanor/rip
 
 : Finally, we have real types we can work with.
 : obviously, your real backend code might be more complex.
-: or, you have found the best niche in the world if you make money out of it.
+: or, you have found the best niche SaaS in the world if you can make money out of it.
 
 ## Conclusion
 
@@ -238,7 +239,7 @@ https://github.com/dolanor/rip
 
 : So, what's about this?
 : you have to create a lot of runtime/reflect type of checks to get back to types in your backend part
-: and have a lot tests to make sure your logic is sound
+: and have a lot of tests to make sure your logic is sound
 
 : but, you can potentially reuse the handler code
 
@@ -259,7 +260,7 @@ https://github.com/dolanor/rip
 
 - better type safety
 - better performance than `interface{}`/`any` (except for this use case)
-  + Go check this [article from Vicent Marti](https://planetscale.com/blog/generics-can-make-your-go-code-slower)
+  + Go check this [article from Vicent Marti](https://planetscale.com/blog/generics-can-make-your-go-code-slower) (deprecated?)
 - more readable code (`math` package, for example)
 - DRY
 
@@ -354,17 +355,14 @@ func Uppercase(ctx context.Context, name string) (string, error) {
 ```
 
 ```go
-http.HandleFunc("/uppercase", rip.Handle(http.MethodPost, Uppercase))
+http.HandleFunc("/uppercase", rip.Handle(http.MethodPost, Uppercase, opts))
 ```
+
 : Let's reuse some standard library, and wrap it in a rip.InputOutputFunc
 : then we can just use it in the standard library ServeMux, and all the HTTP part is handled magically
 
 : now that I can basically wrap nearly every request/response API into HTTP
 : how about creating every endpoints needed for some RESTFul resources?
-
-## rip.Handle Demo
-
-https://github.com/dolanor/rip
 
 ## RIP: Library code
 
@@ -405,12 +403,12 @@ A key concept of REST services is the notion of resource
 ## What you get
 
 - creation of CRUD HTTP endpoints
-- content negociation for many encodings (json, xml, msgpack, HTML, HTML Forms, …)
+- content negociation for many encodings (json, xml, protobuf, msgpack, HTML, HTML Forms, …)
 - automated resource web pages that can edit the resource
 - harmonious way of handling common scenarios (unknown resource: return a 404, etc)
 
 
-## Encoding
+## Encoding: JSON
 
 .code snippets/rip/encoding/json/json.go
 
@@ -426,14 +424,53 @@ A key concept of REST services is the notion of resource
 
 ## Demo
 
-https://github.com/dolanor/rip
+.link https://github.com/dolanor/rip
 
-: curl -H "Content-Type: application/json" -H "Accept: Content-Type: application/json" localhost:8888/users/
+.image ./assets/github-project.qrcode.png _ 500
+
+: So my demo is basically me running a server, then running some curl commands on it
+: to show what RIP can handle for you
+: If I have time, I'll show some code of implementation on a Go minecraft clone project and demo it too
+
+## Demo
+
+.video ./assets/demo.mp4 video/mp4 500 _
+
+: So I run the server.
+: the log in yellow is the log from the http logger middleware and the log from your implementation
+: the rest is just the output of the command
+
+: we can even get that resource in XML. This API allows for time travelling.
+
+## User Code
+
+## Route Option
+
+.code snippets/rip/examples/srv-example/main.go /start route option OMIT/,/end route option OMIT/
+
+## User Code: Entity
+
+.code snippets/rip/examples/srv-example/memuser/memuser.go /start User Entity OMIT/,/end User Entity OMIT/
+
+: You need to implement some interface about handling IDs
+: if somebody have a better idea about that, come and talk to me about it
+
+## User Code: Entity Provider
+
+.code snippets/rip/examples/srv-example/memuser/memuser.go /start User Provider OMIT/,/end User Provider OMIT/
+
+.code snippets/rip/examples/srv-example/memuser/memuser.go /start User Provider Update OMIT/,/end User Provider Update OMIT/
+
+: You just add implementations for Create, Get, Delete and List
+
 
 ## Future
 
-- access/update fields independantly (GET/POST/PUT/DELETE `/users/1/name`)
+- <s>per-route options (encoding, middleware)</s>
+- <s>access/update fields independantly (GET/POST/PUT/DELETE `/users/1/name`)</s>
 - nested resources (eg, `/users/1/posts/1` also points to `/posts/1` )
+- pagination
+- OpenAPI autogeneration
 - more HATEOAS (Hypermedia As The Engine Of Application State)
   + links
   + API auto documentation/explorability
@@ -442,10 +479,10 @@ https://github.com/dolanor/rip
 
 ## Future
 
-- protobuf encoding
+- <s>protobuf encoding</s>
 - use of `log/slog` logger interface
 - better error handling
-  - better error type
+  - <s>better error type</s>
   - nice standard way to return errors to user
 - customization of HTML template
 - authorization of HTML pages
@@ -457,7 +494,9 @@ https://github.com/dolanor/rip
 - discussion
 - contribution
 
-https://github.com/dolanor/rip
+.link https://github.com/dolanor/rip
+
+.image ./assets/github-project.qrcode.png 400 _
 
 : I did this for myself at first, but I think it can help other people as well
 : I'd like to get some feedback from you all
@@ -467,17 +506,22 @@ https://github.com/dolanor/rip
 
 ## Thanks
 
+
 - The Go Team
 - Go SXB Go Meetup (Strasbourg)
 - Thierry Pfeiffer for the logo
 - You for watching that talk
+- FOSDEM and the Go devroom organizers
 - HTMX
 
-.image assets/htmx-logo-pickle.jpeg _ 200
+
+.image ./assets/htmx-logo-pickle.jpeg 300 _
 
 : The Go Team for delivering the generics
 : Go SXB Go Meetup (Strasbourg), for reviewing this talk
 : Thierry Pfeiffer for the logo
+: You for watching that talk
+: FOSDEM and the Go devroom organizers
 : HTMX, for the library it provides, and all the memes that make me laugh on Twitter
 
 : Talking about Twitter, I'm gonna leave the platform, so if you wanna follow me
@@ -486,3 +530,4 @@ https://github.com/dolanor/rip
 : I encourage you to do the same, as the platform has becoming more and more hostile for many people
 : and I joined the Go community for its values in inclusivity and diversity.
 : I hope we can continue in this direction
+

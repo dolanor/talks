@@ -1,3 +1,6 @@
 [submodule "rip/snippets/rip"]
 	path = rip/snippets/rip
 	url = git@github.com:dolanor/rip
+[submodule "rip/snippets/gocraft"]
+	path = rip/snippets/gocraft
+	url = git@github.com:dolanor/gocraft
