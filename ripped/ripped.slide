@@ -1,0 +1,31 @@
+# RIPPED
+
+REST in Peace on steroids
+
+3 Feb 2024
+
+Tags: web, REST, RESTful, golang, Go, generics
+
+Tanguy Herrmann
+Senior Software Engineer, Tuxago⧓
+https://hachyderm.io/@dolanor
+
+https://github.com/dolanor/rip
+
+## RIP
+
+- generate RESTFul HTTP handlers for a Resource/Entity
+
+.image qr.png _ 500
+
+## Live Coding
+
+**Rule #1** of live coding: **DON'T DO IT**
+
+## Go check it out
+
+<img src="ripped.png" width="400">
+<img src="qr.png" width="400">
+
+*logo by Marcus Olsson CC-Attribution-NonCommercial-ShareAlike 4.0*
+
