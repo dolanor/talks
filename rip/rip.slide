@@ -117,7 +117,7 @@ https://github.com/dolanor/rip
 
 ## About me
 
-.video assets/pole-dance.mp4 video/mp4 550 _
+.video assets/crowdsurf.mp4 video/mp4 550 _
 
 : as you can see from this video
 : I'm a freelancer. I'm ready to do anything for money
@@ -450,7 +450,7 @@ A key concept of REST services is the notion of resource
 
 ## User Code: Entity
 
-.code snippets/rip/examples/srv-example/memuser/memuser.go /start User Entity OMIT/,/end User Entity OMIT/
+.code snippets/rip/examples/srv-example/memuser/user.go /start User Entity OMIT/,/end User Entity OMIT/
 
 : You need to implement some interface about handling IDs
 : if somebody have a better idea about that, come and talk to me about it
