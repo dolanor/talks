@@ -8,6 +8,7 @@ Tags: web, REST, RESTful, golang, Go, generics
 
 Tanguy Herrmann
 Senior Software Engineer, Tuxago⧓
+
 https://hachyderm.io/@dolanor
 
 https://github.com/dolanor/rip
@@ -18,11 +19,78 @@ https://github.com/dolanor/rip
 
 .image qr.png _ 500
 
+## About me
+
+- Tanguy
+- from France
+- 18 years in IT
+
+: So who am I?
+
+: I'm Tanguy
+: I'm from France
+: I've worked in IT for 18 years, started with 8 years in consulting. In multiple domains: avionics, 3D mobile app in airports, logistics, healthcare, finance.
+: But that was before…
+
+## About me
+
+.video assets/crowdsurf.mp4 video/mp4 550 _
+
+
+: as you can see from this video
+: I'm a freelancer. I'm ready to do anything for money
+: It's a few months old video now, I didn't do something as foolish as that since then
+: Maybe I can fix that with this presentation!
+
 ## Live Coding
 
 **Rule #1** of live coding: **DON'T DO IT**
 
 *(The finished code can be found in the [example directory of the RIP module](https://github.com/dolanor/rip/blob/e8d69f47c7e0863dbc5c7d60af95bb4d5acff457/examples/gormprovider/main.go))*
+
+## The data
+
+.code snippets/rip/examples/gormprovider/main.go /start custom type OMIT/,/end custom type OMIT/
+
+.image qr.png _ 300
+
+## database
+
+.code snippets/rip/examples/gormprovider/main.go /start db init OMIT/,/end db init OMIT/
+
+.image qr.png _ 300
+
+## Some logging
+
+.code snippets/rip/examples/gormprovider/main.go /start log init OMIT/,/end log init OMIT/
+
+.image qr.png _ 300
+
+## The RIPPED magic
+
+.code snippets/rip/examples/gormprovider/main.go /start gormprovider init OMIT/,/end gormprovider init OMIT/
+
+.image qr.png _ 300
+
+## RIP initialization
+
+.code snippets/rip/examples/gormprovider/main.go /start rip init OMIT/,/end rip init OMIT/ HLinterestingCall
+
+.image qr.png _ 300
+
+## HTTP
+
+.code snippets/rip/examples/gormprovider/main.go /start http init OMIT/,/end http init OMIT/
+
+.image qr.png _ 300
+
+## Full Code
+
+.code snippets/rip/examples/gormprovider/main.go /start full OMIT/,/end full OMIT/
+
+## Demo
+
+.image qr.png _ 500
 
 ## Go check it out
 
